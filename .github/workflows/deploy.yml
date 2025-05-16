@@ -10,6 +10,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
 
 permissions:
   contents: read        # Allows the workflow to read repository contents (needed for checkout).
