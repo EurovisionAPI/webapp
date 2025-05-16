@@ -1,0 +1,34 @@
+<table class="quickgrid">
+  <thead>
+    <tr>
+      @for (column of columns; track $index) {
+        <th [ngClass]="[getAlignClass(column), getSortClass(column)]">
+          @if (column.isSortable()) {
+            <button (click)="onColumnClick(column)">
+              <span>{{column.title}}</span>
+              <span class="sort-indicator"></span>
+            </button>
+          } @else {
+            {{column.title}}
+          }
+        </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of sortedItems; track $index) {
+      <tr>
+        @for (column of columns; track $index) {
+          <td [ngClass]="getAlignClass(column)">
+            <ng-container [ngTemplateOutlet]="column.template" [ngTemplateOutletContext]="{$implicit: item}">
+            </ng-container>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>
+
+<ng-template #row>
+
+</ng-template>

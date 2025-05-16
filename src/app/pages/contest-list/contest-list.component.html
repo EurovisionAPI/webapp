@@ -1,0 +1,23 @@
+<h1>
+  @if (isJunior){
+    <span>Junior </span>
+  }
+  <span>Eurovision</span>
+</h1>
+
+<form (submit)="false">
+  <input type="text" placeholder="Search..." (input)="onInputSearchChanged($event)" />
+  <button class="sort-button" (click)="toggleSort()">
+    <i [class]="`fa-solid fa-arrow-${orderArrow}`" aria-hidden="true"></i>
+    Year
+  </button>
+</form>
+
+<section class="contest-list">
+  @for (contest of contests; track contest.year) {
+    <a class="link item-card" [routerLink]="`./${contest.year}`">
+      <app-contest-title [countryCode]="contest.countryCode" [city]="contest.city"
+        [year]="contest.year"></app-contest-title>
+    </a>
+  }
+</section>

@@ -1,0 +1,25 @@
+.switch {
+  display: flex;
+  width: fit-content;
+  border: 2px solid var(--brand-color);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.option {
+  padding: 0.2em;
+  text-align: center;
+}
+
+.option:hover {
+  background-color: color-mix(in srgb, var(--brand-color) 20%, transparent 80%);
+}
+
+.option.selected {
+  background-color: var(--brand-color);
+  color: var(--brand-text-color);
+}
+
+.option + .option {
+  border-left: 2px solid var(--brand-color);
+}

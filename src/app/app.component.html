@@ -1,0 +1,20 @@
+<header>
+  <a class="logo" [routerLink]="currentRoute">
+    <img src="images/eurovision_logo.webp" />
+  </a>
+
+  <a class="link" [routerLink]="linkRoute">
+    <div>{{linkTitle}}</div>
+  </a>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer>
+  Eurovision is trademark of
+  <a href="https://www.ebu.ch/home" title="European Broadcasting Union">
+    EBU.
+  </a>
+</footer>

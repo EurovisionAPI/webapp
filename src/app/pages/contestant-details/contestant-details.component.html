@@ -1,0 +1,119 @@
+@if (contestant) {
+  <div class="title">
+    <app-heart-flag [countryCode]="contestant.countryCode" />
+    <div>
+      <div>Eurovision {{year}} {{contestant.countryName}}</div>
+      <div>{{contestant.artist}} - {{contestant.song}}</div>
+    </div>
+    <app-heart-flag [countryCode]="contestant.countryCode" />
+  </div>
+
+  @if (contestant.disqualified) {
+    <div class="disqualified">Disqualified</div>
+  }
+
+  @if (contestant.videoUrl) {
+    <div class="yt-video">
+      <iframe [src]="contestant.videoUrl" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+  }
+
+  <div class="data-container contestant-data">
+    <div><span class="data-entry">Song:</span> {{contestant.song}}</div>
+    <div><span class="data-entry">Artist:</span> {{contestant.artist}}</div>
+    @if (contestant.backings) {
+      <div><span class="data-entry">Backings:</span> {{contestant.backings}}</div>
+    }
+    @if (contestant.broadcaster) {
+      <div><span class="data-entry">Broadcaster:</span> {{contestant.broadcaster}}</div>
+    }
+    @if (contestant.commentators) {
+      <div><span class="data-entry">Commentators:</span> {{contestant.commentators}}</div>
+    }
+    @if (contestant.composers) {
+      <div><span class="data-entry">Composers:</span> {{contestant.composers}}</div>
+    }
+    @if (contestant.conductor) {
+      <div><span class="data-entry">Conductor:</span> {{contestant.conductor}}</div>
+    }
+    @if (contestant.dancers) {
+      <div><span class="data-entry">Dancers:</span> {{contestant.dancers}}</div>
+    }
+    @if (contestant.spokesperson) {
+      <div><span class="data-entry">Spokesperson:</span> {{contestant.spokesperson}}</div>
+    }
+    @if (contestant.stageDirector) {
+      <div><span class="data-entry">Stage director:</span> {{contestant.stageDirector}}</div>
+    }
+    @if (contestant.writers) {
+      <div><span class="data-entry">Writers:</span> {{contestant.writers}}</div>
+    }
+  </div>
+
+  <div class="sheet-results">
+    @let musicSheet = contestant.musicSheet;
+    @if (musicSheet) {
+      <div class="music-sheet-data">
+        <div class="data-container">
+          @if (musicSheet.bpm) {
+            <div><span class="data-entry">Beats per minute:</span> {{musicSheet.bpm}}</div>
+          }
+          @if (musicSheet.tone) {
+            <div><span class="data-entry">Tone:</span> {{musicSheet.tone}}</div>
+          }
+        </div>
+
+        <app-armor-music-sheet [tempo]="musicSheet.bpm" [note]="musicSheet.note"
+          [scale]="musicSheet.scale"></app-armor-music-sheet>
+      </div>
+    }
+
+    <div class="results">
+      @for (round of contestant.rounds; track round.name) {
+        <div class="round-result" [attr.place]="round.place">
+          <span class="name">{{round.name}}</span>
+          <div>
+            <div>
+              <span>PLACE</span>
+              {{round.place}}
+              <small>/ {{round.contestantsCount}}</small>
+            </div>
+            <div>
+              <span>POINTS</span>
+              {{round.points}}
+            </div>
+          </div>
+          <span>RUNNING ORDER: {{round.running}}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  @let lyrics = contestant.lyrics;
+  @if (lyrics && lyrics.length > 0) {
+    <section class="lyrics">
+      <div class="lyrics-header">
+        <span>Lyrics</span>
+        <select [value]="lyricsSelectedIndex" (change)="onLyricsChanged($event)">
+          @for (lyrics of contestant.lyrics; track $index) {
+            <option [value]="$index">{{lyrics.languages}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="lyrics-title">{{lyricsRender.title}}</div>
+
+      <div class="lyrics-content">
+        @for (column of lyricsRender.contentColumns; track $index) {
+          <div>
+            @for (paragraph of column; track $index) {
+              <p [innerHTML]="paragraph"></p>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
+}

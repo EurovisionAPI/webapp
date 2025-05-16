@@ -1,0 +1,77 @@
+:host {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+}
+
+/* ======================= Header ======================= */
+
+header {
+  --header-size: 60px;
+
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 4rem;
+  background-color: var(--brand-color);
+  color: var(--brand-text-color);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 75%;
+}
+
+.link {
+  --angle: -30deg;
+  
+  margin-right: -0.75em;
+  padding-inline: 1em 1.5em;
+  height: 100%;
+  align-content: center;
+  background: #bd7bff96;
+  transform: skewX(var(--angle));
+  font-family: Eurovision;
+  font-size: 1.8em;
+}
+
+.link div {
+  transform: skewX(calc(var(--angle) * -1))
+}
+
+.link:hover {
+  background: #9742f2d5;
+  color: white;
+}
+
+/* ====================================================== */
+
+main {
+  margin-inline: auto;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* ======================= Footer ======================= */
+
+footer {
+  padding: 10px;
+  background-color: var(--brand-color);
+  color: var(--brand-text-color);
+  text-align: end;
+}
+
+a {
+  color: inherit;
+}
+
+/* ====================================================== */

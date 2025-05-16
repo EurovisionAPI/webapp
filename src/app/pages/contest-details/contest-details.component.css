@@ -1,0 +1,69 @@
+:host {
+  display: block;
+  margin-inline: auto;
+  max-width: 850px;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.data-container {
+  margin-block: 1.5em;
+  display: flex;
+  gap: 1em;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contest-data {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  width: 100%;
+  gap: 1em;
+  background-color: var(--info-box-color);
+  border-radius: 20px;
+}
+
+.data-entry {
+  font-weight: bold;
+}
+
+.cancelled-alert {
+  margin-top: 1em;
+}
+
+img.logo {
+  min-width: 100px;
+  max-width: clamp(150px, 40vw, 300px);
+  min-height: 100px;
+  max-height: 300px;
+}
+
+.results {
+  padding-top: 0.5em;
+}
+
+.results-title {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-size: 1.8em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.round-details {
+  margin-top: 1.5em;
+}
+
+.round-details:not(:first-of-type) {
+  margin-top: 2.5em;
+}
+
+@media (max-width:600px) {
+  .data-container {
+    flex-direction: column;
+  }
+}

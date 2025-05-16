@@ -1,0 +1,5 @@
+<div class="switch">
+  @for (option of options; track $index) {
+    <div class="option" [class.selected]="value == $index" (click)="changeValue($index)">{{option}}</div>
+  }
+</div>

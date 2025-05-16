@@ -1,0 +1,42 @@
+th button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+
+  display: flex;
+  gap: 0.4rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.col-justify-start {
+  text-align: start;
+}
+
+.col-justify-center {
+  text-align: center;
+}
+
+.col-justify-end {
+  text-align: end;
+}
+
+.sort-indicator {
+  width: 1rem;
+  height: 1rem;
+  align-self: center;
+  text-align: center;
+}
+
+.col-sort-asc .sort-indicator, .col-sort-desc .sort-indicator {
+  opacity: 0.5;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M 2 3.25 L 12 20.75 L 22 3.25 L 12 10 z" /></svg>');
+}
+
+.col-sort-asc .sort-indicator {
+  transform: scaleY(-1);
+}

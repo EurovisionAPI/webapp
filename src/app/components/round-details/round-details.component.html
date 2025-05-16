@@ -1,0 +1,16 @@
+@if (!isCancelled) {
+  <div class="header">
+    <h3 class="round-name">{{roundName}}</h3>
+    @if (hasScore) {
+      <app-switch [options]="['Ranking', 'Score']" [value]="toggleOptionSelected"
+        (change)="changeToggleOption($event)"></app-switch>
+    }
+  </div>
+}
+
+@if (toggleOptionSelected == ToggleOptions.Ranking) {
+  <app-contestants-table [isCancelled]="isCancelled" [contestants]="contestants"
+    [round]="round"></app-contestants-table>
+} @else {
+  <app-score-board [contestants]="contestants" [performances]="round.performances"></app-score-board>
+}

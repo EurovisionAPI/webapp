@@ -1,0 +1,50 @@
+@if (types.length > 1) {
+  <div class="toggle">
+    <app-switch [options]="types" (change)="changeType($event)"></app-switch>
+  </div>
+}
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th colspan="4" style="background: transparent;"></th>
+        @for (country of countries; track country) {
+          <th>
+            @if (country === 'WLD') {
+              <img class="flag" src="images/world.webp">
+            } @else {
+              <app-flag [countryCode]="country"></app-flag>
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (performance of performancesData; track $index) {
+        <tr>
+          <td class="number">
+            {{$index + 1}}
+          </td>
+          <td>
+            <app-flag [countryCode]="performance.countryCode"></app-flag>
+          </td>
+          <td class="countryName">
+            {{performance.countryName}}
+          </td>
+          <td class="number">
+            {{performance.points}}
+          </td>
+          @for (vote of performance.votes; track $index) {
+            <td class="number" [class.self]="vote == -1">
+              @if (vote > 0) {
+                {{vote}}
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,45 @@
+.toggle {
+  display: flex;
+  margin-bottom: 1em;
+  justify-content: center;
+}
+
+::ng-deep .option {
+  text-transform: capitalize;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  margin-inline: auto;
+  font-size: 0.85em;
+}
+
+table, th, td {
+  --border-color: gray;
+
+  border: 1px solid var(--border-color);
+  border-collapse: collapse;
+}
+
+td.countryName {
+  white-space: nowrap;
+}
+
+td.number {
+  text-align: center;
+}
+
+::ng-deep .flag {
+  width: 1em;
+  height: auto;
+}
+
+.self {
+  --size: 0.8px;
+
+  background-image: linear-gradient(to top left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) calc(50% - var(--size)), var(--border-color) 50%, rgba(0, 0, 0, 0) calc(50% + var(--size)), rgba(0, 0, 0, 0) 100%), linear-gradient(to top right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) calc(50% - var(--size)), var(--border-color) 50%, rgba(0, 0, 0, 0) calc(50% + var(--size)), rgba(0, 0, 0, 0) 100%) !important;
+}

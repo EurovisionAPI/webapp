@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+# Declaring custom variables
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+  OUTPUT_PATH: dist/webapp/browser
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read        # Allows the workflow to read repository contents (needed for checkout).
+  pages: write          # Grants permission to deploy to GitHub Pages.
+  id-token: write       # Required for authentication with GitHub Pages using OpenID Connect (OIDC).
+
+concurrency:
+  group: "pages"              # Defines a concurrency group named "pages".
+  cancel-in-progress: true    # Automatically cancels any previous workflow still running in this group when a new one starts.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app
+        run: npx ng build --configuration production --base-href /$REPO_NAME/
+
+      - name: Create 404.html for Angular routing fallback
+        run: cp ${{ env.OUTPUT_PATH }}/index.html ${{ env.OUTPUT_PATH }}/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.OUTPUT_PATH }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

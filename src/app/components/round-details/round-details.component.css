@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  margin-bottom: 1em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.round-name {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  text-transform: capitalize;
+}

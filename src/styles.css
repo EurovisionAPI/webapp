@@ -1,0 +1,65 @@
+:root {
+  --brand-color: rgb(25, 25, 117);
+  --brand-text-color: white;
+  --info-box-color: #C8C7F2AA;
+}
+
+html, body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a.link {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+a, button {
+  cursor: pointer;
+}
+
+input, button, select {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* ======================= Fonts ======================= */
+
+@font-face {
+  font-family: 'Eurovision';
+  src: url('./assets/fonts/Eurotype2016.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gotham Book';
+  src: url('./assets/fonts/GothamBook.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Polihymnia';
+  src: url('./assets/fonts/Polihymnia.ttf') format('truetype');
+}
+
+/* ======================= Responsive ======================= */
+
+/* Tablet */
+@media screen and (min-width: 500px) and (max-width: 799.9px){
+  html {
+    font-size: 85%;
+  }
+}
+
+/* Móvil */ 
+@media screen and (max-width: 499.9px){
+  html {
+    font-size: clamp(60%, 3vw, 85%);
+  }
+
+  main {
+    padding: 10px !important;
+  }
+}

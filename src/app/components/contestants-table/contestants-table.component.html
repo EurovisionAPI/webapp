@@ -1,0 +1,52 @@
+<quick-grid [items]="contestantsData">
+  @if (hasAttribute('place')) {
+    <template-column [title]="columnPlaceTitle" [sortBy]="PLACE_SORT" [align]="'center'">
+      <ng-template let-context>
+        <a class="place" [routerLink]="getRowLink(context)">
+          {{context.place}}
+        </a>
+      </ng-template>
+    </template-column>
+  }
+
+  <template-column title="Country" [sortBy]="COUNTRY_SORT">
+    <ng-template let-context>
+      <a class="country" [routerLink]="getRowLink(context)">
+        <app-flag [countryCode]="context.countryCode"></app-flag>
+        <div class="country-name">{{context.countryName}}</div>
+      </a>
+    </ng-template>
+  </template-column>
+
+  <template-column title="Song / Artist" [sortBy]="SONG_ARTIST_SORT">
+    <ng-template let-context>
+      <a [routerLink]="getRowLink(context)">
+        <span class="song">{{context.song}}</span>
+        @if (context.isDisqualified) {
+          <span class="disqualified">Disqualified</span>
+        }
+        <div class="artist">{{context.artist}}</div>
+      </a>
+    </ng-template>
+  </template-column>
+
+  @if (hasAttribute('points')) {
+    <template-column [title]="columnPointsTitle" [sortBy]="POINTS_SORT" [align]="'center'">
+      <ng-template let-context>
+        <a [routerLink]="getRowLink(context)">
+          {{ context.points }}
+        </a>
+      </ng-template>
+    </template-column>
+  }
+
+  @if (hasAttribute('running')) {
+    <template-column [title]="columnRunningTitle" [sortBy]="RUNNING_SORT" [align]="'center'">
+      <ng-template let-context>
+        <a [routerLink]="getRowLink(context)">
+          {{ context.running }}
+        </a>
+      </ng-template>
+    </template-column>
+  }
+</quick-grid>

@@ -1,0 +1,23 @@
+.contest-title {
+  text-align: center;
+}
+
+.title {
+  font-size: 3.5em;
+  font-family: Eurovision;
+  line-height: normal;
+}
+
+img {
+  position: relative;
+  bottom: -0.2em;
+  width: 1em;
+}
+
+.subtitle {
+  margin-block: 0.2em;
+  font-size: 1em;
+  font-family: Gotham Book;
+  font-weight: bold;
+  text-transform: uppercase;
+}

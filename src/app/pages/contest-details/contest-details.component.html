@@ -1,0 +1,54 @@
+@if (contest) {
+  <section class="title">
+    <app-contest-title [countryCode]="contest.country" [city]="contest.city" [year]="contest.year"></app-contest-title>
+  </section>
+
+  <section class="data-container">
+    <div>
+      <div class="contest-data">
+        @if (contest.dateTime) {
+          <div><span class="data-entry">Date:</span> {{contest.dateTime}}</div>
+        }
+        @if (contest.location) {
+          <div><span class="data-entry">Location:</span> {{contest.location}}</div>
+        }
+        @if (contest.slogan) {
+          <div><span class="data-entry">Slogan:</span> {{contest.slogan}}</div>
+        }
+        @if (contest.broadcasters) {
+          <div><span class="data-entry">Broadcasters:</span> {{contest.broadcasters}}</div>
+        }
+        @if (contest.presenters) {
+          <div><span class="data-entry">Presenters:</span> {{contest.presenters}}</div>
+        }
+        <div><span class="data-entry">Participants:</span> {{contest.participants}}</div>
+        @if (contest.voting) {
+          <div><span class="data-entry">Voting:</span> {{contest.voting}}</div>
+        }
+      </div>
+
+      @if (contest.cancelledMessage) {
+        <div class="cancelled-alert">
+          <app-alert class="cancelled-alert">
+            {{contest.cancelledMessage}}
+          </app-alert>
+        </div>
+      }
+    </div>
+
+    @if (contest.logoUrl) {
+      <img class="logo" [src]="contest.logoUrl" alt="logo">
+    }
+  </section>
+
+  <section class="results">
+    <h2 class="results-title">{{contest.cancelledMessage ? "Participants" : "Results"}}</h2>
+
+    @for (round of contest.rounds; track round.name) {
+      <div class="round-details">
+        <app-round-details [isCancelled]="contest.isCancelled" [contestants]="contest.contestants"
+          [round]="round"></app-round-details>
+      </div>
+    }
+  </section>
+}
