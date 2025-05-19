@@ -1,7 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { BaseContestComponent } from '../base/base-contest.component';
 import { RouterLink } from '@angular/router';
 import { ContestTitleComponent } from "../../components/contest-title/contest-title.component";
+import { RouteService } from '../../services/route.service';
 
 @Component({
   selector: 'app-contest-list',
@@ -18,9 +19,13 @@ export class ContestListComponent extends BaseContestComponent implements OnInit
 
   override async ngOnInit() {
     super.ngOnInit();
+    await this.loadContests();
+    console.log('Es junior: ', this.isJunior)
+  }
+
+  private async loadContests() {
     this.allContests = await this.getContestsData();
     this.search(null);
-    console.log('Es junior: ', this.isJunior)
   }
 
   onInputSearchChanged(event: Event) {
@@ -87,4 +92,8 @@ interface ContestData {
   countryCode: string;
   countryName: string;
   city: string;
+}
+
+function effort(arg0: () => void) {
+  throw new Error('Function not implemented.');
 }

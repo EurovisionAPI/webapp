@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Injectable({
@@ -16,5 +16,7 @@ export class RouteService {
   private onUrlChanged(url: string) {
     const isJunior = url.startsWith('/junior');
     this.isJunior.set(isJunior);
+
+    console.log('cambio')
   }
 }
