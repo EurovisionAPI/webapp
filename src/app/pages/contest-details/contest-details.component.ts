@@ -46,7 +46,7 @@ export class ContestDetailsComponent extends BaseContestComponent implements OnI
       broadcasters: contest.broadcasters?.join(', '),
       presenters: contest.presenters?.join(', '),
       contestants: contest.contestants,
-      rounds: contest.rounds
+      rounds: isCancelled ? [contest.rounds[0]] : contest.rounds
     };
   }
 

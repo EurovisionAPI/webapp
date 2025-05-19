@@ -25,7 +25,7 @@ export class RoundDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.roundName = Utils.getDisplayRoundName(this.round.name);
-    this.hasScore = this.round.performances[0].scores.length > 0;
+    this.hasScore = this.round.performances?.at(0).scores.length > 0;
   }
 
   protected changeToggleOption(value: number) {
