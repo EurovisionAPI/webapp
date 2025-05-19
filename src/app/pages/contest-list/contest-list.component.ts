@@ -20,7 +20,6 @@ export class ContestListComponent extends BaseContestComponent implements OnInit
   override async ngOnInit() {
     super.ngOnInit();
     await this.loadContests();
-    console.log('Es junior: ', this.isJunior)
   }
 
   private async loadContests() {

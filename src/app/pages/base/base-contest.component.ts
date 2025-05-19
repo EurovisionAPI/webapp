@@ -15,14 +15,8 @@ export abstract class BaseContestComponent implements OnInit {
 
   protected isJunior = false;
 
-  constructor() {
-    effect(() => {
-      this.isJunior = this.routeService.isJunior();
-    })
-  }
-
   ngOnInit(): void {
-    
+    this.isJunior = this.routeService.isJunior();
   }
 
   protected getCountryCode(contest: ContestReference) {

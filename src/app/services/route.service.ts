@@ -14,9 +14,7 @@ export class RouteService {
   }
 
   private onUrlChanged(url: string) {
-    const isJunior = url.startsWith('/junior');
+    const isJunior = url.includes('junior');
     this.isJunior.set(isJunior);
-
-    console.log('cambio')
   }
 }
