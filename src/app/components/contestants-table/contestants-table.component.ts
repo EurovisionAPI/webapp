@@ -74,7 +74,7 @@ export class ContestantsTableComponent implements OnInit {
         song: contestant.song,
         artist: contestant.artist,
         running: performance.running,
-        points: performance.scores?.reduce((sum, s) => sum + s.points, 0),
+        points: performance.scores.find(score => score.name === 'total')?.points,
         isDisqualified: this.round.disqualifieds?.includes(contestant.id)
       }
     });

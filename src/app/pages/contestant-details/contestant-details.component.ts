@@ -92,7 +92,7 @@ export class ContestantDetailsComponent extends BaseContestComponent {
           name: Utils.getDisplayRoundName(round.name),
           place: performance.place,
           contestantsCount: round.performances.length,
-          points: performance.scores?.reduce((sum, score) => sum + score.points, 0),
+          points: performance.scores.find(score => score.name === 'total')?.points,
           running: performance.running,
           isDisqualified: round.disqualifieds?.includes(contestantId)
         });
