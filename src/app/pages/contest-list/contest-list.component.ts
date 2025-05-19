@@ -20,6 +20,7 @@ export class ContestListComponent extends BaseContestComponent implements OnInit
     super.ngOnInit();
     this.allContests = await this.getContestsData();
     this.search(null);
+    console.log('Es junior: ', this.isJunior)
   }
 
   onInputSearchChanged(event: Event) {
