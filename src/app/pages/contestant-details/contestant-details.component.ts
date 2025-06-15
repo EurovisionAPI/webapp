@@ -65,19 +65,26 @@ export class ContestantDetailsComponent extends BaseContestComponent {
       artist: contestant.artist,
       song: contestant.song,
       videoUrl: this.sanitizer.bypassSecurityTrustResourceUrl(contestant.videoUrls?.[0]),
-      disqualified: rounds.some(round => round.isDisqualified),
-      rounds: rounds,
-      musicSheet: this.getMusicSheetData(contestant),
       lyrics: lyrics,
+      musicSheet: this.getMusicSheetData(contestant),
+
+      artistPeople: contestant.artistPeople?.join(', '),
       backings: contestant.backings?.join(', '),
-      broadcaster: contestant.broadcaster,
-      commentators: contestant.commentators?.join(', '),
+      dancers: contestant.dancers?.join(', '),
+      stageDirector: contestant.stageDirector,
+
       composers: contestant.composers?.join(', '),
       conductor: contestant.conductor,
-      dancers: contestant.dancers?.join(', '),
+      lyricists: contestant.lyricists?.join(', '),
+      writers: contestant.writers?.join(', '),
+
+      broadcaster: contestant.broadcaster,
+      commentators: contestant.commentators?.join(', '),
+      jury: contestant.jury?.join(', '),
       spokesperson: contestant.spokesperson,
-      stageDirector: contestant.stageDirector,
-      writers: contestant.writers?.join(', ')
+
+      disqualified: rounds.some(round => round.isDisqualified),
+      rounds: rounds
     }
   }
 
@@ -189,19 +196,26 @@ interface ContestantData {
   artist: string;
   song: string;
   videoUrl: SafeResourceUrl;
-  disqualified: boolean;
-  rounds: RoundData[];
-  musicSheet: MusicSheetData;
   lyrics: LyricsData[];
+  musicSheet: MusicSheetData;
+
+  artistPeople: string;
   backings: string;
-  broadcaster: string;
-  commentators: string;
+  dancers: string;  
+  stageDirector: string; 
+
   composers: string;
   conductor: string;
-  dancers: string;
-  spokesperson: string;
-  stageDirector: string;
+  lyricists: string;
   writers: string;
+
+  broadcaster: string;
+  commentators: string;
+  jury: string;
+  spokesperson: string;
+
+  disqualified: boolean;
+  rounds: RoundData[];
 }
 
 interface MusicSheetData {

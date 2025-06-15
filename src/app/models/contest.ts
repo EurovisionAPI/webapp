@@ -5,9 +5,8 @@ import { Round } from "./round";
 export interface Contest extends ContestReference {
   slogan: string;
   logoUrl: string;
-  voting: string;
-  presenters: string[];
   broadcasters: string[];
+  presenters: string[];
   contestants: ContestantReference[];
   rounds: Round[];
 }

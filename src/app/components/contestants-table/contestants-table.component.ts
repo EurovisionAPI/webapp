@@ -64,7 +64,7 @@ export class ContestantsTableComponent implements OnInit {
 
   private getContestantsData(): ContestantData[] {
     return this.round.performances.map(performance => {
-      const contestant = this.contestants[performance.contestantId];
+      const contestant = this.contestants.find(contestant => contestant.id == performance.contestantId);
 
       return {
         id: contestant.id,

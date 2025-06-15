@@ -29,6 +29,6 @@ export class ContestService {
   private getContestsUrl(): string {
     const isJunior = this.routeService.isJunior();
 
-    return isJunior ? 'junior/contests' : 'contests';
+    return `${isJunior ? 'junior' : 'senior'}/contests`;
   }
 }

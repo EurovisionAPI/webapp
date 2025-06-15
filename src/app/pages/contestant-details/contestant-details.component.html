@@ -23,14 +23,17 @@
   <div class="data-container contestant-data">
     <div><span class="data-entry">Song:</span> {{contestant.song}}</div>
     <div><span class="data-entry">Artist:</span> {{contestant.artist}}</div>
+    @if (contestant.artistPeople) {
+      <div><span class="data-entry">Artist people:</span> {{contestant.artistPeople}}</div>
+    }
     @if (contestant.backings) {
       <div><span class="data-entry">Backings:</span> {{contestant.backings}}</div>
     }
-    @if (contestant.broadcaster) {
-      <div><span class="data-entry">Broadcaster:</span> {{contestant.broadcaster}}</div>
+    @if (contestant.dancers) {
+      <div><span class="data-entry">Dancers:</span> {{contestant.dancers}}</div>
     }
-    @if (contestant.commentators) {
-      <div><span class="data-entry">Commentators:</span> {{contestant.commentators}}</div>
+    @if (contestant.stageDirector) {
+      <div><span class="data-entry">Stage director:</span> {{contestant.stageDirector}}</div>
     }
     @if (contestant.composers) {
       <div><span class="data-entry">Composers:</span> {{contestant.composers}}</div>
@@ -38,17 +41,23 @@
     @if (contestant.conductor) {
       <div><span class="data-entry">Conductor:</span> {{contestant.conductor}}</div>
     }
-    @if (contestant.dancers) {
-      <div><span class="data-entry">Dancers:</span> {{contestant.dancers}}</div>
+    @if (contestant.lyricists) {
+      <div><span class="data-entry">Lyricists:</span> {{contestant.lyricists}}</div>
+    }    
+    @if (contestant.writers) {
+      <div><span class="data-entry">Writers:</span> {{contestant.writers}}</div>
+    }
+    @if (contestant.broadcaster) {
+      <div><span class="data-entry">Broadcaster:</span> {{contestant.broadcaster}}</div>
+    }
+    @if (contestant.commentators) {
+      <div><span class="data-entry">Commentators:</span> {{contestant.commentators}}</div>
+    }
+    @if (contestant.jury) {
+      <div><span class="data-entry">Jury members:</span> {{contestant.jury}}</div>
     }
     @if (contestant.spokesperson) {
       <div><span class="data-entry">Spokesperson:</span> {{contestant.spokesperson}}</div>
-    }
-    @if (contestant.stageDirector) {
-      <div><span class="data-entry">Stage director:</span> {{contestant.stageDirector}}</div>
-    }
-    @if (contestant.writers) {
-      <div><span class="data-entry">Writers:</span> {{contestant.writers}}</div>
     }
   </div>
 

@@ -42,7 +42,6 @@ export class ContestDetailsComponent extends BaseContestComponent implements OnI
       isCancelled: isCancelled,
       cancelledMessage: cancelledMessage,
       participants: contest.contestants.length,
-      voting: contest.voting,
       broadcasters: contest.broadcasters?.join(', '),
       presenters: contest.presenters?.join(', '),
       contestants: contest.contestants,
@@ -107,9 +106,8 @@ interface ContestData {
   isCancelled: boolean;
   cancelledMessage: string;
   participants: number;
-  voting: string;
-  presenters: string;
   broadcasters: string;
+  presenters: string;
   contestants: ContestantReference[];
   rounds: Round[];
 }

@@ -2,17 +2,23 @@ import { ContestantReference } from "./contestant-reference";
 import { Lyrics } from "./lyrics";
 
 export interface Contestant extends ContestantReference {
-  lyrics: Lyrics[];
   videoUrls: string[];
-  tone: string;
+  lyrics: Lyrics[];
   bpm: number;
+  tone: string;
+  
+  artistPeople: string[];
   backings: string[];
-  broadcaster: string;
-  commentators: string[];
+  dancers: string[];
+  stageDirector: string;
+
   composers: string[];
   conductor: string;
-  dancers: string[];
-  spokesperson: string;
-  stageDirector: string;
+  lyricists: string[];
   writers: string[];
+
+  broadcaster: string;
+  commentators: string[];
+  jury: string[];
+  spokesperson: string; 
 }
