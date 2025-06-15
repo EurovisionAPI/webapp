@@ -57,7 +57,7 @@ export class ContestantDetailsComponent extends BaseContestComponent {
 
   async getContestantData(contest: Contest, contestant: Contestant): Promise<ContestantData> {
     const rounds = this.getRoundsData(contest, contestant.id);
-    const lyrics = contestant.lyrics.filter(lyrics => lyrics.content).map(this.getLyricsData)
+    const lyrics = this.getAllLyricsData(contestant.lyrics);
 
     return {
       countryCode: contestant.country,
@@ -68,19 +68,19 @@ export class ContestantDetailsComponent extends BaseContestComponent {
       lyrics: lyrics,
       musicSheet: this.getMusicSheetData(contestant),
 
-      artistPeople: contestant.artistPeople?.join(', '),
-      backings: contestant.backings?.join(', '),
-      dancers: contestant.dancers?.join(', '),
+      artistPeople: Utils.join(contestant.artistPeople),
+      backings: Utils.join(contestant.backings),
+      dancers: Utils.join(contestant.dancers),
       stageDirector: contestant.stageDirector,
 
-      composers: contestant.composers?.join(', '),
+      composers: Utils.join(contestant.composers),
       conductor: contestant.conductor,
-      lyricists: contestant.lyricists?.join(', '),
-      writers: contestant.writers?.join(', '),
+      lyricists: Utils.join(contestant.lyricists),
+      writers: Utils.join(contestant.writers),
 
       broadcaster: contestant.broadcaster,
-      commentators: contestant.commentators?.join(', '),
-      jury: contestant.jury?.join(', '),
+      commentators: Utils.join(contestant.commentators),
+      jury: Utils.join(contestant.jury),
       spokesperson: contestant.spokesperson,
 
       disqualified: rounds.some(round => round.isDisqualified),
@@ -117,7 +117,7 @@ export class ContestantDetailsComponent extends BaseContestComponent {
       const noteName = noteAndScaleNames[0];
       const noteKey = noteName.replace('b', 'Flat').replace('#', 'Sharp');
       const note = ArmorMusicSheetComponent.Notes[noteKey as keyof typeof ArmorMusicSheetComponent.Notes];
-      const noteDisplay = noteName.toUpperCase();
+      const noteDisplay = noteName.replace('b', '♭');
       const scaleName = noteAndScaleNames[1];
       let scale, scaleDisplay;
 
@@ -140,9 +140,38 @@ export class ContestantDetailsComponent extends BaseContestComponent {
     return result;
   }
 
+  private getAllLyricsData(lyrics: Lyrics[]): LyricsData[] {
+    return lyrics.filter(lyrics => lyrics.content)
+      .sort((l1, l2) => {
+        const isL1Original = l1.type === 0;
+        const isL2Original = l2.type === 0;
+
+        // Step 1: Original lyrics (with type 0) come first
+        if (isL1Original && !isL2Original) return -1;
+        if (!isL1Original && isL2Original) return 1;
+
+        // Step 2: If both are originals, sort by presence of displayedLanguages
+        if (isL1Original && isL2Original) {
+          const l1HasDisplayed = l1.displayedLanguages;
+          const l2HasDisplayed = l2.displayedLanguages;
+
+          if (l1HasDisplayed && !l2HasDisplayed) return 1;
+          if (!l1HasDisplayed && l2HasDisplayed) return -1;
+          return 0; // Both have or both don't have it
+        }
+
+        // Step 3: For other types, sort alphabetically
+        return l1.languages.toString().localeCompare(l2.languages.toString());
+      })
+      .map(this.getLyricsData);
+  }
+
   private getLyricsData(lyrics: Lyrics): LyricsData {
+    const languages = lyrics.displayedLanguages ?? lyrics.languages;
+    const languagesTitlecase = languages.map(Utils.toTitleCase);
+
     return {
-      languages: lyrics.languages.join(' & '),
+      languages: Utils.join(languagesTitlecase),
       title: lyrics.title,
       content: lyrics.content
     }
@@ -201,8 +230,8 @@ interface ContestantData {
 
   artistPeople: string;
   backings: string;
-  dancers: string;  
-  stageDirector: string; 
+  dancers: string;
+  stageDirector: string;
 
   composers: string;
   conductor: string;

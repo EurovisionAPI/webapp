@@ -7,6 +7,7 @@ import { Round } from '../../models/round';
 import { AlertComponent } from "../../components/alert/alert.component";
 import { ContestantReference } from '../../models/contestant-reference';
 import { RoundDetailsComponent } from "../../components/round-details/round-details.component";
+import { Utils } from '../../utils/utils';
 
 @Component({
   selector: 'app-contest-details',
@@ -42,8 +43,8 @@ export class ContestDetailsComponent extends BaseContestComponent implements OnI
       isCancelled: isCancelled,
       cancelledMessage: cancelledMessage,
       participants: contest.contestants.length,
-      broadcasters: contest.broadcasters?.join(', '),
-      presenters: contest.presenters?.join(', '),
+      broadcasters: Utils.join(contest.broadcasters),
+      presenters: Utils.join(contest.presenters),
       contestants: contest.contestants,
       rounds: isCancelled ? [contest.rounds[0]] : contest.rounds
     };

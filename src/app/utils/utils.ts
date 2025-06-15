@@ -11,4 +11,18 @@ export class Utils {
         return 'Semifinal 2';
     }
   }
+
+  static join(items: string[]): string {
+    if (!items) return null;
+
+    return items.length > 1
+      ? items.slice(0, -1).join(', ') + ' & ' + items.at(-1)
+      : items[0];
+  }
+
+  static toTitleCase(text: string): string {
+    return text
+      ? text[0].toUpperCase() + text.substring(1).toLowerCase()
+      : null;
+  }
 }
