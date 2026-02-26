@@ -1,8 +1,8 @@
-@if (contestant) {
+@if (contestant(); as contestant) {
   <div class="title">
     <app-heart-flag [countryCode]="contestant.countryCode" />
     <div>
-      <div>Eurovision {{year}} {{contestant.countryName}}</div>
+      <div>{{contestTitle()}}</div>
       <div>{{contestant.artist}} - {{contestant.song}}</div>
     </div>
     <app-heart-flag [countryCode]="contestant.countryCode" />
@@ -43,7 +43,7 @@
     }
     @if (contestant.lyricists) {
       <div><span class="data-entry">Lyricists:</span> {{contestant.lyricists}}</div>
-    }    
+    }
     @if (contestant.writers) {
       <div><span class="data-entry">Writers:</span> {{contestant.writers}}</div>
     }
@@ -105,7 +105,7 @@
     <section class="lyrics">
       <div class="lyrics-header">
         <span>Lyrics</span>
-        <select [value]="lyricsSelectedIndex" (change)="onLyricsChanged($event)">
+        <select [value]="lyricsSelectedIndex()" (change)="onLyricsChanged($event)">
           @for (lyrics of contestant.lyrics; track $index) {
             <option [value]="$index">{{lyrics.languages}}</option>
           }

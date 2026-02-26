@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { StringBuilder } from '../../utils/string-builder';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -11,7 +11,7 @@ enum Scales { Major, Minor };
   templateUrl: './armor-music-sheet.component.html',
   styleUrl: './armor-music-sheet.component.css'
 })
-export class ArmorMusicSheetComponent implements OnInit {
+export class ArmorMusicSheetComponent {
 
   static readonly Notes = Notes;
   static readonly Scales = Scales;
@@ -77,24 +77,22 @@ export class ArmorMusicSheetComponent implements OnInit {
     [Notes.ASharp, Notes.CSharp],
   ]);
 
-  @Input() note: Notes;
-  @Input() scale: Scales;
-  @Input() tempo: number;
+  readonly note = input.required<Notes>();
+  readonly scale = input.required<Scales>();
+  readonly tempo = input.required<number>();
 
-  private positionX: number = 0;
-  protected html: SafeHtml;
+  private sanitizer = inject(DomSanitizer);
 
-  constructor(private sanitizer: DomSanitizer) { }
+  private positionX = 0;
+  readonly html = computed<SafeHtml>(() => {
+    const builder = new StringBuilder();
+    this.drawTempo(builder, this.tempo());
+    this.drawStaff(builder);
+    this.drawArmor(builder);
+    this.drawAccord(builder);
 
-  ngOnInit(): void {
-    const htmlBuilder = new StringBuilder();
-    this.drawTempo(htmlBuilder, this.tempo);
-    this.drawStaff(htmlBuilder);
-    this.drawArmor(htmlBuilder);
-    this.drawAccord(htmlBuilder);
-
-    this.html = this.sanitizer.bypassSecurityTrustHtml(htmlBuilder.toString());
-  }
+    return this.sanitizer.bypassSecurityTrustHtml(builder.toString());
+  });
 
   private drawTempo(builder: StringBuilder, tempo: number) {
     if (tempo) {
@@ -117,10 +115,10 @@ export class ArmorMusicSheetComponent implements OnInit {
   }
 
   private drawArmor(builder: StringBuilder) {
-    let note = this.note;
+    let note = this.note();
 
     // Find relative major
-    if (this.scale == Scales.Minor) {
+    if (this.scale() == Scales.Minor) {
       if (this.FIFTH_CIRCLE.has(note)) {
         note = this.FIFTH_CIRCLE.get(note);
       } else {
@@ -159,7 +157,7 @@ export class ArmorMusicSheetComponent implements OnInit {
   }
 
   private drawAccord(builder: StringBuilder) {
-    const startNote: number = Math.floor(this.note / 3); // flat + nature + sharp
+    const startNote: number = Math.floor(this.note() / 3); // flat + nature + sharp
     let positionY: number = this.C_NOTE_POSITION_Y - (this.STAFF_LINE_SPACE / 2) * startNote;
     this.positionX += this.MARGIN_ACCORD;
 

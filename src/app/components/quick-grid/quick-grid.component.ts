@@ -1,4 +1,4 @@
-import { Component, ContentChildren, Input, OnInit, QueryList } from '@angular/core';
+import { Component, computed, ContentChildren, input, QueryList, signal } from '@angular/core';
 import { TemplateColumnComponent } from './template-column.component';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
@@ -8,41 +8,33 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
   templateUrl: './quick-grid.component.html',
   styleUrl: './quick-grid.component.css'
 })
-export class QuickGridComponent<T> implements OnInit {
-
-  @Input() items: T[] = [];
+export class QuickGridComponent<T> {
   @ContentChildren(TemplateColumnComponent) columns!: QueryList<TemplateColumnComponent>;
 
-  protected sortColumn: TemplateColumnComponent;
-  protected isAscending: boolean;
-  protected sortedItems: T[];
+  items = input.required<T[]>();
 
-  ngOnInit(): void {
-    this.sortItems();
-  }
+  private sortColumn = signal<TemplateColumnComponent | null>(null);
+  private isAscending = signal<boolean>(true);
+  protected sortedItems = computed<T[]>(() => this.sortItems());
 
   private sortItems() {
-    if (this.sortColumn) {
-      this.sortedItems = this.sortColumn.sortBy.apply(this.items, this.isAscending);
-    } else{
-      this.sortedItems = this.items;
-    }
+    return this.sortColumn()
+      ? this.sortColumn().sortBy().apply(this.items(), this.isAscending())
+      : this.items();
   }
 
   protected onColumnClick(column: TemplateColumnComponent) {
-    if (this.sortColumn == column) {
-      this.isAscending = !this.isAscending;
+    if (this.sortColumn() == column) {
+      this.isAscending.update(value => !value);
     } else {
-      this.sortColumn = column;
-      this.isAscending = true;
+      this.sortColumn.set(column);
+      this.isAscending.set(true);
     }
-
-    this.sortItems();
   }
 
   protected getSortClass(column: TemplateColumnComponent): string {
-    return this.sortColumn === column
-      ? (this.isAscending ? 'col-sort-asc' : 'col-sort-desc')
+    return this.sortColumn() === column
+      ? (this.isAscending() ? 'col-sort-asc' : 'col-sort-desc')
       : '';
   }
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-flag',
@@ -6,12 +6,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
   templateUrl: './flag.component.html',
   styleUrl: './flag.component.css'
 })
-export class FlagComponent implements OnChanges {
-  @Input() countryCode: string;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['countryCode']) {
-      this.countryCode = this.countryCode.toLowerCase();
-    }
-  }
+export class FlagComponent {
+  countryCode = input.required<string>();
+  protected lowerCountryCode = computed(() => this.countryCode().toLowerCase());
 }

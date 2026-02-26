@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
+import { Component, computed, ContentChild, input, Input, TemplateRef } from '@angular/core';
 import { GridSort } from './grid-sort';
 
 @Component({
@@ -7,12 +7,11 @@ import { GridSort } from './grid-sort';
   template: ''
 })
 export class TemplateColumnComponent {
-  @Input() title: string;
   @ContentChild(TemplateRef) template!: TemplateRef<any>;
-  @Input() align: 'start' | 'center' | 'end' = 'start';
-  @Input() sortBy: GridSort<any>;
 
-  isSortable(): boolean {
-    return this.sortBy != null;
-  }
+  title = input.required<string>();
+  align = input<'start' | 'center' | 'end'>('start');
+  sortBy = input<GridSort<any> | null>(null);
+
+  isSortable = computed(() => this.sortBy() != null);
 }

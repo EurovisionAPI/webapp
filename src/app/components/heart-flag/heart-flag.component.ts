@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, input, Input } from '@angular/core';
 
 @Component({
   selector: 'app-heart-flag',
@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './heart-flag.component.css'
 })
 export class HeartFlagComponent {
-  @Input()
-  countryCode: string;
+  countryCode = input.required<string>();
+  protected lowerCountryCode = computed(() => this.countryCode().toLowerCase());
 }

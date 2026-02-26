@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-contest-title',
@@ -7,12 +7,8 @@ import { Component, Input } from '@angular/core';
   styleUrl: './contest-title.component.css'
 })
 export class ContestTitleComponent {
-  @Input()
-  countryCode: string;
-
-  @Input()
-  city: string;
-
-  @Input()
-  year: number; 
+  countryCode = input.required<string>();
+  city = input.required<string>();
+  year = input.required<number>();
+  isJunior = input<boolean>(false);
 }

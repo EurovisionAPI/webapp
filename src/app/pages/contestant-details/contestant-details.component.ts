@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { BaseContestComponent } from '../base/base-contest.component';
 import { ActivatedRoute } from '@angular/router';
 import { HeartFlagComponent } from "../../components/heart-flag/heart-flag.component";
@@ -22,24 +22,34 @@ export class ContestantDetailsComponent extends BaseContestComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
 
-  year: number;
-  contestant: ContestantData;
-  lyricsSelectedIndex: number;
   lyricsRender: LyricsRender;
   lyricsSelectedColumns: string[][][];
 
-  override async ngOnInit() {
-    super.ngOnInit();
-    this.year = +this.route.snapshot.paramMap.get('year');
+  protected contestant = signal<ContestantData | null>(null);
+  protected lyricsSelectedIndex = signal(0);
+  protected year = computed(() => +this.route.snapshot.paramMap.get('year'));
+  protected contestTitle = computed(() => {
+    const country = this.contestant()?.countryName ?? '';
+    const junior = this.isJunior() ? 'Junior ' : '';
+
+    return `${junior}Eurovision ${this.year()} ${country}`;
+  });
+
+  constructor() {
+    super();
+    this.loadContestant();
+  }
+
+  async loadContestant() {
     const contestantId = +this.route.snapshot.paramMap.get('contestantId');
     const [contest, contestant] = await Promise.all([
-      this.contestService.getContest(this.year),
-      this.contestService.getContestant(this.year, contestantId)
+      this.contestService.getContest(this.year()),
+      this.contestService.getContestant(this.year(), contestantId)
     ]);
 
-    this.contestant = await this.getContestantData(contest, contestant);
+    this.contestant.set(await this.getContestantData(contest, contestant));
 
-    if (this.contestant.lyrics && this.contestant.lyrics.length > 0) {
+    if (this.contestant()?.lyrics && this.contestant()?.lyrics.length > 0) {
       this.selectLyrics(0);
     }
   }
@@ -51,8 +61,8 @@ export class ContestantDetailsComponent extends BaseContestComponent {
   }
 
   private selectLyrics(index: number) {
-    this.lyricsSelectedIndex = index;
-    this.lyricsRender = this.getLyricsRender(this.lyricsSelectedIndex);
+    this.lyricsSelectedIndex.set(index);
+    this.lyricsRender = this.getLyricsRender(this.lyricsSelectedIndex());
   }
 
   async getContestantData(contest: Contest, contestant: Contestant): Promise<ContestantData> {
@@ -178,10 +188,10 @@ export class ContestantDetailsComponent extends BaseContestComponent {
   }
 
   private getLyricsRender(index: number): LyricsRender {
-    const lyrics = this.contestant.lyrics[index];
+    const lyrics = this.contestant().lyrics[index];
 
     return {
-      title: lyrics.title ?? this.contestant.song,
+      title: lyrics.title ?? this.contestant().song,
       contentColumns: this.getLyricsColumns(lyrics.content)
     };
   }

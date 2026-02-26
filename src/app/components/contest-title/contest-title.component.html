@@ -1,10 +1,17 @@
 <div class="contest-title">
   <div class="title">
-    <span>Euro</span>
-    <img [src]="`images/heart_flags/${countryCode.toLowerCase()}.png`" />
-    <span>ision</span>
+    @if(isJunior()){
+      <div class="junior">
+        <span>Junior</span>
+      </div>
+    }
+    <div>
+      <span>Euro</span>
+      <img [src]="`images/heart_flags/${countryCode().toLowerCase()}.png`" />
+      <span>ision</span>
+    </div>
   </div>
   <div class="subtitle">
-    <span>{{ city }} {{ year }}</span>
+    <span>{{ city() }} {{ year() }}</span>
   </div>
 </div>

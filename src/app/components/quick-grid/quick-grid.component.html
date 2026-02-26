@@ -5,18 +5,18 @@
         <th [ngClass]="[getAlignClass(column), getSortClass(column)]">
           @if (column.isSortable()) {
             <button (click)="onColumnClick(column)">
-              <span>{{column.title}}</span>
+              <span>{{column.title()}}</span>
               <span class="sort-indicator"></span>
             </button>
           } @else {
-            {{column.title}}
+            {{column.title()}}
           }
         </th>
       }
     </tr>
   </thead>
   <tbody>
-    @for (item of sortedItems; track $index) {
+    @for (item of sortedItems(); track $index) {
       <tr>
         @for (column of columns; track $index) {
           <td [ngClass]="getAlignClass(column)">
@@ -28,7 +28,3 @@
     }
   </tbody>
 </table>
-
-<ng-template #row>
-
-</ng-template>

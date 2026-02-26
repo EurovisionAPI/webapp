@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { ContestantReference } from '../../models/contestant-reference';
 import { Round } from '../../models/round';
 import { SwitchComponent } from "../switch/switch.component";
@@ -12,24 +12,20 @@ import { Utils } from '../../utils/utils';
   templateUrl: './round-details.component.html',
   styleUrl: './round-details.component.css'
 })
-export class RoundDetailsComponent implements OnInit {
+export class RoundDetailsComponent {
 
-  @Input() isCancelled: boolean;
-  @Input() contestants: ContestantReference[];
-  @Input() round: Round;
+  contestants = input.required<ContestantReference[]>();
+  round = input.required<Round>();
+  isCancelled = input.required<boolean>();
 
-  roundName: string;
-  hasScore: boolean;
-  ToggleOptions = ToggleOptions;
-  toggleOptionSelected = ToggleOptions.Ranking;
+  protected ToggleOptions = ToggleOptions;
+  protected toggleOptionSelected = signal(ToggleOptions.Ranking);
 
-  ngOnInit(): void {
-    this.roundName = Utils.getDisplayRoundName(this.round.name);
-    this.hasScore = this.round.performances?.at(0).scores.length > 0;
-  }
+  protected roundName = computed(() => Utils.getDisplayRoundName(this.round().name));
+  protected hasScore = computed(() => this.round().performances?.at(0).scores.length > 0);
 
   protected changeToggleOption(value: number) {
-    this.toggleOptionSelected = value;
+    this.toggleOptionSelected.set(value);
   }
 }
 

@@ -1,6 +1,7 @@
-@if (contest) {
+@if (contest(); as contest) {
   <section class="title">
-    <app-contest-title [countryCode]="contest.country" [city]="contest.city" [year]="contest.year"></app-contest-title>
+    <app-contest-title [countryCode]="contest.country" [city]="contest.city" [year]="contest.year"
+      [isJunior]="isJunior()"></app-contest-title>
   </section>
 
   <section class="data-container">

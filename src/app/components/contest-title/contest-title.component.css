@@ -8,6 +8,11 @@
   line-height: normal;
 }
 
+.junior {
+  margin-bottom: -0.4em;
+  font-size: 0.75em;
+}
+
 img {
   position: relative;
   bottom: -0.2em;

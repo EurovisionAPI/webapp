@@ -1,6 +1,6 @@
 @if (types.length > 1) {
   <div class="toggle">
-    <app-switch [options]="types" (change)="changeType($event)"></app-switch>
+    <app-switch [options]="types" [value]="typeIndexSelected" (change)="changeType($event)"></app-switch>
   </div>
 }
 

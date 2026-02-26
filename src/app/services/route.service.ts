@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Injectable({
@@ -8,7 +8,9 @@ export class RouteService {
 
   readonly isJunior = signal<boolean>(true);
 
-  constructor(private location: Location) {
+  private location = inject(Location);
+
+  constructor() {
     this.onUrlChanged(this.location.path());
     this.location.onUrlChange(url => this.onUrlChanged(url));
   }

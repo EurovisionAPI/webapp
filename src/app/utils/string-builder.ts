@@ -1,9 +1,5 @@
 export class StringBuilder {
-  private lines: string[];
-
-  constructor() {
-    this.lines = [];
-  }
+  private lines: string[] = [];
 
   append(text: string) {
     if (this.lines.length == 0) {
