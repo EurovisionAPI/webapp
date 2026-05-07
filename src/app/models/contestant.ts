@@ -6,19 +6,19 @@ export interface Contestant extends ContestantReference {
   lyrics: Lyrics[];
   bpm: number;
   tone: string;
-  
-  artistPeople: string[];
-  backings: string[];
-  dancers: string[];
-  stageDirector: string;
 
-  composers: string[];
-  conductor: string;
-  lyricists: string[];
-  writers: string[];
+  artistPeople: string[];
+  backings: string[] | null;
+  dancers: string[] | null;
+  stageDirector: string | null;
+
+  composers: string[] | null;
+  conductor: string | null;
+  lyricists: string[] | null;
+  writers: string[] | null;
 
   broadcaster: string;
   commentators: string[];
   jury: string[];
-  spokesperson: string; 
+  spokesperson: string;
 }

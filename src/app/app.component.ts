@@ -1,4 +1,4 @@
-import { Component, effect } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { RouteService } from './services/route.service';
 
@@ -9,25 +9,27 @@ import { RouteService } from './services/route.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  readonly SENIOR_ROUTE = '';
-  readonly JUNIOR_ROUTE = 'junior';
+  static readonly SENIOR_ROUTE = '';
+  static readonly JUNIOR_ROUTE = 'junior';
 
-  currentRoute: string;
-  linkTitle: string;
-  linkRoute: string;
+  private readonly routeService = inject(RouteService);
 
-  constructor(private routeService: RouteService) {
+  readonly currentRoute = signal<string>('');
+  readonly linkTitle = signal<string>('');
+  readonly linkRoute = signal<string>('');
+
+  constructor() {
     effect(() => {
       const isJunior = this.routeService.isJunior();
 
       if (isJunior) {
-        this.currentRoute = this.getContestsRoute(this.JUNIOR_ROUTE);
-        this.linkTitle = 'Senior';
-        this.linkRoute = this.getContestsRoute(this.SENIOR_ROUTE);
+        this.currentRoute.set(this.getContestsRoute(AppComponent.JUNIOR_ROUTE));
+        this.linkTitle.set('Senior');
+        this.linkRoute.set(this.getContestsRoute(AppComponent.SENIOR_ROUTE));
       } else {
-        this.currentRoute = this.getContestsRoute(this.SENIOR_ROUTE);
-        this.linkTitle = 'Junior';
-        this.linkRoute = this.getContestsRoute(this.JUNIOR_ROUTE);
+        this.currentRoute.set(this.getContestsRoute(AppComponent.SENIOR_ROUTE));
+        this.linkTitle.set('Junior');
+        this.linkRoute.set(this.getContestsRoute(AppComponent.JUNIOR_ROUTE));
       }
     });
   }

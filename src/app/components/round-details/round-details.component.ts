@@ -6,6 +6,8 @@ import { ContestantsTableComponent } from "../contestants-table/contestants-tabl
 import { ScoreBoardComponent } from "../score-board/score-board.component";
 import { Utils } from '../../utils/utils';
 
+enum ToggleOptions { Ranking, Score }
+
 @Component({
   selector: 'app-round-details',
   imports: [SwitchComponent, ContestantsTableComponent, ScoreBoardComponent],
@@ -13,23 +15,17 @@ import { Utils } from '../../utils/utils';
   styleUrl: './round-details.component.css'
 })
 export class RoundDetailsComponent {
+  protected readonly ToggleOptions = ToggleOptions;
 
-  contestants = input.required<ContestantReference[]>();
-  round = input.required<Round>();
-  isCancelled = input.required<boolean>();
+  readonly contestants = input.required<ContestantReference[]>();
+  readonly round = input.required<Round>();
+  readonly isCancelled = input.required<boolean>();
 
-  protected ToggleOptions = ToggleOptions;
-  protected toggleOptionSelected = signal(ToggleOptions.Ranking);
-
-  protected roundName = computed(() => Utils.getDisplayRoundName(this.round().name));
-  protected hasScore = computed(() => this.round().performances?.at(0).scores.length > 0);
+  protected readonly toggleOptionSelected = signal(ToggleOptions.Ranking);
+  protected readonly roundName = computed(() => Utils.getDisplayRoundName(this.round().name));
+  protected readonly hasScore = computed(() => (this.round().performances?.at(0)?.scores.length ?? 0) > 0);
 
   protected changeToggleOption(value: number) {
     this.toggleOptionSelected.set(value);
   }
-}
-
-enum ToggleOptions {
-  Ranking,
-  Score
 }

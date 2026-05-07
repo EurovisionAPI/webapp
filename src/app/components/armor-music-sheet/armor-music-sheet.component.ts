@@ -77,13 +77,12 @@ export class ArmorMusicSheetComponent {
     [Notes.ASharp, Notes.CSharp],
   ]);
 
+  private sanitizer = inject(DomSanitizer);
+  private positionX = 0;
+
   readonly note = input.required<Notes>();
   readonly scale = input.required<Scales>();
   readonly tempo = input.required<number>();
-
-  private sanitizer = inject(DomSanitizer);
-
-  private positionX = 0;
   readonly html = computed<SafeHtml>(() => {
     const builder = new StringBuilder();
     this.drawTempo(builder, this.tempo());
@@ -96,8 +95,8 @@ export class ArmorMusicSheetComponent {
 
   private drawTempo(builder: StringBuilder, tempo: number) {
     if (tempo) {
-      builder.appendLine(this.drawMusicText(0, this.TEMPO_POSITION_Y, this.TEMPO_SIZE, "qj"));
-      builder.appendLine(this.drawText(11, this.TEMPO_POSITION_Y + 1, this.TEMPO_SIZE - 4, "Open Sans", `= ${tempo}`));
+      builder.appendLine(this.drawMusicText(0, this.TEMPO_POSITION_Y, this.TEMPO_SIZE, 'qj'));
+      builder.appendLine(this.drawText(11, this.TEMPO_POSITION_Y + 1, this.TEMPO_SIZE - 4, 'Open Sans', `= ${tempo}`));
     }
   }
 
@@ -111,7 +110,7 @@ export class ArmorMusicSheetComponent {
 
     this.positionX += this.MARGIN_KEY;
     const positionY = this.STAFF_POSITION_Y + 16;
-    stringBuilder.appendLine(this.drawSheet(this.positionX, positionY, "Gj"));
+    stringBuilder.appendLine(this.drawSheet(this.positionX, positionY, 'Gj'));
   }
 
   private drawArmor(builder: StringBuilder) {
@@ -120,9 +119,9 @@ export class ArmorMusicSheetComponent {
     // Find relative major
     if (this.scale() == Scales.Minor) {
       if (this.FIFTH_CIRCLE.has(note)) {
-        note = this.FIFTH_CIRCLE.get(note);
+        note = this.FIFTH_CIRCLE.get(note)!;
       } else {
-        throw new Error("Not exist scale");
+        throw new Error('Not exist scale');
       }
     }
 
@@ -132,18 +131,18 @@ export class ArmorMusicSheetComponent {
 
     if (alterationCount >= 0) // Sharp
     {
-      alteration = "Xj";
+      alteration = 'Xj';
       alterationPositions = this.SHARP_POSITIONS;
     }
     else {
       alterationCount = this.FLATS_ORDER.indexOf(note);
 
       if (alterationCount >= 0) { // Flat
-        alteration = "bj";
+        alteration = 'bj';
         alterationPositions = this.FLAT_POSITIONS;
       }
       else
-        throw new Error("Not exist scale");
+        throw new Error('Not exist scale');
     }
 
     this.positionX += this.MARGIN_ALTERATIONS;
@@ -162,7 +161,7 @@ export class ArmorMusicSheetComponent {
     this.positionX += this.MARGIN_ACCORD;
 
     for (let i = 0; i < this.ACCORD_NOTES_LENGTH; i++) {
-      const note: string = this.drawSheet(this.positionX, positionY, "wj");
+      const note: string = this.drawSheet(this.positionX, positionY, 'wj');
       builder.appendLine(note);
       positionY -= this.STAFF_LINE_SPACE;
     }

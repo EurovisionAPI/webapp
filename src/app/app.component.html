@@ -1,10 +1,10 @@
 <header>
-  <a class="logo" [routerLink]="currentRoute">
+  <a class="logo" [routerLink]="currentRoute()">
     <img src="images/eurovision_logo.webp" />
   </a>
 
-  <a class="link" [routerLink]="linkRoute">
-    <div>{{linkTitle}}</div>
+  <a class="link" [routerLink]="linkRoute()">
+    <div>{{linkTitle()}}</div>
   </a>
 </header>
 

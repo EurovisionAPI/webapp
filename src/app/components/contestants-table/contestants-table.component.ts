@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, inject, input, OnInit, signal } from '@angular/core';
 import { ContestantReference } from '../../models/contestant-reference';
 import { Round } from '../../models/round';
 import { QuickGridComponent } from "../quick-grid/quick-grid.component";
@@ -26,22 +26,23 @@ export class ContestantsTableComponent implements OnInit {
   readonly POINTS_SORT = GridSort.byAscending<ContestantData>(c => c.points);
   readonly RUNNING_SORT = GridSort.byAscending<ContestantData>(c => c.running);
 
-  @Input() isCancelled: boolean;
-  @Input() contestants: ContestantReference[];
-  @Input() round: Round;
+  private readonly countryService = inject(CountryService);
 
-  contestantsData: ContestantData[];
-  columnPlaceTitle: string;
-  columnPointsTitle: string;
-  columnRunningTitle: string;
+  readonly isCancelled = input.required<boolean>();
+  readonly contestants = input.required<ContestantReference[]>();
+  readonly round = input.required<Round>();
 
-  constructor(private countryService: CountryService) { }
+  readonly contestantsData = signal<ContestantData[]>([]);
+  readonly columnPlaceTitle = signal<string>('');
+  readonly columnPointsTitle = signal<string>('');
+  readonly columnRunningTitle = signal<string>('');
 
   ngOnInit(): void {
-    this.contestantsData = this.isCancelled
+    const contestantsData = this.isCancelled()
       ? this.getContestantsDataCancelled()
-      : this.getContestantsData();
+      : this.getContestantsData()
 
+    this.contestantsData.set(contestantsData);
     this.onWindowResize();
   }
 
@@ -49,13 +50,13 @@ export class ContestantsTableComponent implements OnInit {
   onWindowResize() {
     const width = window.innerWidth;
 
-    this.columnPlaceTitle = width > this.MAX_WIDTH_PLACE_COLUMN_SMALL ? 'Place' : '#';
-    this.columnPointsTitle = width > this.MAX_WIDTH_POINTS_COLUMN_SMALL ? 'Points' : 'Pts';
-    this.columnRunningTitle = width > this.MAX_WIDTH_RUNNING_COLUMN_SMALL ? 'Running' : 'Run';
+    this.columnPlaceTitle.set(width > this.MAX_WIDTH_PLACE_COLUMN_SMALL ? 'Place' : '#');
+    this.columnPointsTitle.set(width > this.MAX_WIDTH_POINTS_COLUMN_SMALL ? 'Points' : 'Pts');
+    this.columnRunningTitle.set(width > this.MAX_WIDTH_RUNNING_COLUMN_SMALL ? 'Running' : 'Run');
   }
 
-  protected hasAttribute(attribute: string): boolean {
-    return this.contestantsData.some(contestant => contestant[attribute]);
+  protected hasAttribute(attribute: keyof ContestantData): boolean {
+    return this.contestantsData().some(contestant => contestant[attribute]);
   }
 
   protected getRowLink(contestant: ContestantData): string {
@@ -63,8 +64,8 @@ export class ContestantsTableComponent implements OnInit {
   }
 
   private getContestantsData(): ContestantData[] {
-    return this.round.performances.map(performance => {
-      const contestant = this.contestants.find(contestant => contestant.id == performance.contestantId);
+    return this.round().performances.map(performance => {
+      const contestant = this.contestants().find(contestant => contestant.id == performance.contestantId)!;
 
       return {
         id: contestant.id,
@@ -74,14 +75,14 @@ export class ContestantsTableComponent implements OnInit {
         song: contestant.song,
         artist: contestant.artist,
         running: performance.running,
-        points: performance.scores.find(score => score.name === 'total')?.points,
-        isDisqualified: this.round.disqualifieds?.includes(contestant.id)
+        points: performance.scores.find(score => score.name === 'total')?.points ?? null,
+        isDisqualified: this.round().disqualifieds?.includes(contestant.id)
       }
     });
   }
 
   private getContestantsDataCancelled(): ContestantData[] {
-    return this.contestants.map(contestant => ({
+    return this.contestants().map(contestant => ({
       id: contestant.id,
       place: null,
       countryCode: contestant.country,
@@ -97,12 +98,12 @@ export class ContestantsTableComponent implements OnInit {
 
 interface ContestantData {
   id: number;
-  place: number;
+  place: number | null;
   countryCode: string;
   countryName: string;
   song: string;
   artist: string;
-  running: number;
-  points: number;
+  running: number | null;
+  points: number | null;
   isDisqualified: boolean;
 }

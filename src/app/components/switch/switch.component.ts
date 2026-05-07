@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, output, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-switch',
@@ -7,9 +7,9 @@ import { Component, EventEmitter, input, output, Output } from '@angular/core';
   styleUrl: './switch.component.css'
 })
 export class SwitchComponent {
-  options = input.required<any[]>();
-  value = input.required<number>();
-  change = output<number>();
+  readonly options = input.required<any[]>();
+  readonly value = input.required<number>();
+  readonly change = output<number>();
 
   protected changeValue(index: number) {
     this.change.emit(index);

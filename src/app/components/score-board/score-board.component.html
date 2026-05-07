@@ -1,6 +1,6 @@
 @if (types.length > 1) {
   <div class="toggle">
-    <app-switch [options]="types" [value]="typeIndexSelected" (change)="changeType($event)"></app-switch>
+    <app-switch [options]="types()" [value]="typeIndexSelected()" (change)="changeType($event)"></app-switch>
   </div>
 }
 
@@ -8,8 +8,8 @@
   <table>
     <thead>
       <tr>
-        <th colspan="4" style="background: transparent;"></th>
-        @for (country of countries; track country) {
+        <th colspan="3" style="background: transparent;"></th>
+        @for (country of countries(); track country) {
           <th>
             @if (country === 'WLD') {
               <img class="flag" src="images/world.webp">
@@ -22,22 +22,20 @@
     </thead>
 
     <tbody>
-      @for (performance of performancesData; track $index) {
+      @for (performance of performancesData(); track $index) {
         <tr>
           <td class="number">
             {{$index + 1}}
           </td>
-          <td>
-            <app-flag [countryCode]="performance.countryCode"></app-flag>
-          </td>
           <td class="countryName">
+            <app-flag [countryCode]="performance.countryCode"></app-flag>
             {{performance.countryName}}
           </td>
           <td class="number">
             {{performance.points}}
           </td>
           @for (vote of performance.votes; track $index) {
-            <td class="number" [class.self]="vote == -1">
+            <td class="number" [class.self]="vote === -1">
               @if (vote > 0) {
                 {{vote}}
               }

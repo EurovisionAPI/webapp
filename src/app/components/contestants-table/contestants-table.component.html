@@ -1,6 +1,6 @@
-<quick-grid [items]="contestantsData">
+<quick-grid [items]="contestantsData()">
   @if (hasAttribute('place')) {
-    <template-column [title]="columnPlaceTitle" [sortBy]="PLACE_SORT" [align]="'center'">
+    <template-column [title]="columnPlaceTitle()" [sortBy]="PLACE_SORT" [align]="'center'">
       <ng-template let-context>
         <a class="place" [routerLink]="getRowLink(context)">
           {{context.place}}
@@ -31,7 +31,7 @@
   </template-column>
 
   @if (hasAttribute('points')) {
-    <template-column [title]="columnPointsTitle" [sortBy]="POINTS_SORT" [align]="'center'">
+    <template-column [title]="columnPointsTitle()" [sortBy]="POINTS_SORT" [align]="'center'">
       <ng-template let-context>
         <a [routerLink]="getRowLink(context)">
           {{ context.points }}
@@ -41,7 +41,7 @@
   }
 
   @if (hasAttribute('running')) {
-    <template-column [title]="columnRunningTitle" [sortBy]="RUNNING_SORT" [align]="'center'">
+    <template-column [title]="columnRunningTitle()" [sortBy]="RUNNING_SORT" [align]="'center'">
       <ng-template let-context>
         <a [routerLink]="getRowLink(context)">
           {{ context.running }}

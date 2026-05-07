@@ -22,13 +22,13 @@ export class ContestantDetailsComponent extends BaseContestComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
 
-  lyricsRender: LyricsRender;
-  lyricsSelectedColumns: string[][][];
+  protected readonly lyricsRender = signal<LyricsRender | null>(null);
+  protected readonly lyricsSelectedColumns = signal<string[][][]>([]);
+  protected readonly contestant = signal<ContestantData | null>(null);
+  protected readonly lyricsSelectedIndex = signal(0);
 
-  protected contestant = signal<ContestantData | null>(null);
-  protected lyricsSelectedIndex = signal(0);
-  protected year = computed(() => +this.route.snapshot.paramMap.get('year'));
-  protected contestTitle = computed(() => {
+  protected readonly year = computed(() => Number(this.route.snapshot.paramMap.get('year')));
+  protected readonly contestTitle = computed(() => {
     const country = this.contestant()?.countryName ?? '';
     const junior = this.isJunior() ? 'Junior ' : '';
 
@@ -41,15 +41,16 @@ export class ContestantDetailsComponent extends BaseContestComponent {
   }
 
   async loadContestant() {
-    const contestantId = +this.route.snapshot.paramMap.get('contestantId');
+    const contestantId = Number(this.route.snapshot.paramMap.get('contestantId'));
     const [contest, contestant] = await Promise.all([
       this.contestService.getContest(this.year()),
       this.contestService.getContestant(this.year(), contestantId)
     ]);
 
-    this.contestant.set(await this.getContestantData(contest, contestant));
+    const constentData = await this.getContestantData(contest, contestant);
+    this.contestant.set(constentData);
 
-    if (this.contestant()?.lyrics && this.contestant()?.lyrics.length > 0) {
+    if (constentData && constentData.lyrics && constentData.lyrics.length > 0) {
       this.selectLyrics(0);
     }
   }
@@ -62,7 +63,7 @@ export class ContestantDetailsComponent extends BaseContestComponent {
 
   private selectLyrics(index: number) {
     this.lyricsSelectedIndex.set(index);
-    this.lyricsRender = this.getLyricsRender(this.lyricsSelectedIndex());
+    this.lyricsRender.set(this.getLyricsRender(this.lyricsSelectedIndex()));
   }
 
   async getContestantData(contest: Contest, contestant: Contestant): Promise<ContestantData> {
@@ -81,17 +82,17 @@ export class ContestantDetailsComponent extends BaseContestComponent {
       artistPeople: Utils.join(contestant.artistPeople),
       backings: Utils.join(contestant.backings),
       dancers: Utils.join(contestant.dancers),
-      stageDirector: contestant.stageDirector,
+      stageDirector: contestant.stageDirector ?? '',
 
       composers: Utils.join(contestant.composers),
-      conductor: contestant.conductor,
+      conductor: contestant.conductor ?? '',
       lyricists: Utils.join(contestant.lyricists),
       writers: Utils.join(contestant.writers),
 
       broadcaster: contestant.broadcaster,
       commentators: Utils.join(contestant.commentators),
       jury: Utils.join(contestant.jury),
-      spokesperson: contestant.spokesperson,
+      spokesperson: contestant.spokesperson ?? '',
 
       disqualified: rounds.some(round => round.isDisqualified),
       rounds: rounds
@@ -109,7 +110,7 @@ export class ContestantDetailsComponent extends BaseContestComponent {
           name: Utils.getDisplayRoundName(round.name),
           place: performance.place,
           contestantsCount: round.performances.length,
-          points: performance.scores.find(score => score.name === 'total')?.points,
+          points: performance.scores.find(score => score.name === 'total')?.points ?? null,
           running: performance.running,
           isDisqualified: round.disqualifieds?.includes(contestantId)
         });
@@ -119,8 +120,8 @@ export class ContestantDetailsComponent extends BaseContestComponent {
     return result;
   }
 
-  private getMusicSheetData(contestant: Contestant): MusicSheetData {
-    let result: MusicSheetData = null;
+  private getMusicSheetData(contestant: Contestant): MusicSheetData | null {
+    let result: MusicSheetData | null = null;
 
     if (contestant.tone) {
       const noteAndScaleNames = contestant.tone.split(' ');
@@ -187,11 +188,16 @@ export class ContestantDetailsComponent extends BaseContestComponent {
     }
   }
 
-  private getLyricsRender(index: number): LyricsRender {
-    const lyrics = this.contestant().lyrics[index];
+  private getLyricsRender(index: number): LyricsRender | null {
+    const contestant = this.contestant();
+
+    if (!contestant)
+      return null;
+
+    const lyrics = contestant.lyrics[index];
 
     return {
-      title: lyrics.title ?? this.contestant().song,
+      title: contestant.lyrics[index].title ?? contestant.song,
       contentColumns: this.getLyricsColumns(lyrics.content)
     };
   }
@@ -236,7 +242,7 @@ interface ContestantData {
   song: string;
   videoUrl: SafeResourceUrl;
   lyrics: LyricsData[];
-  musicSheet: MusicSheetData;
+  musicSheet: MusicSheetData | null;
 
   artistPeople: string;
   backings: string;
@@ -268,7 +274,7 @@ interface RoundData {
   name: string;
   place: number;
   contestantsCount: number;
-  points: number;
+  points: number | null;
   running: number;
   isDisqualified: boolean;
 }

@@ -3,5 +3,5 @@ export interface ContestReference {
   arena: string;
   city: string;
   country: string;
-  intendedCountry: string;
+  intendedCountry: string | null;
 }

@@ -11,16 +11,15 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 export class QuickGridComponent<T> {
   @ContentChildren(TemplateColumnComponent) columns!: QueryList<TemplateColumnComponent>;
 
-  items = input.required<T[]>();
+  readonly items = input.required<T[]>();
 
-  private sortColumn = signal<TemplateColumnComponent | null>(null);
-  private isAscending = signal<boolean>(true);
-  protected sortedItems = computed<T[]>(() => this.sortItems());
+  private readonly sortColumn = signal<TemplateColumnComponent | null>(null);
+  private readonly isAscending = signal<boolean>(true);
+  protected readonly sortedItems = computed<T[]>(() => this.sortItems());
 
   private sortItems() {
-    return this.sortColumn()
-      ? this.sortColumn().sortBy().apply(this.items(), this.isAscending())
-      : this.items();
+    return this.sortColumn()?.sortBy()?.apply(this.items(), this.isAscending())
+      ?? this.items();
   }
 
   protected onColumnClick(column: TemplateColumnComponent) {

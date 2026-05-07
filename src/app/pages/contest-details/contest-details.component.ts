@@ -17,15 +17,14 @@ import { Utils } from '../../utils/utils';
 })
 export class ContestDetailsComponent extends BaseContestComponent {
 
-  private readonly ROUNDS_PRIORITY: Record<string, number> = {
+  private static readonly ROUNDS_PRIORITY: Record<string, number> = {
     'final': 0,
     'semifinal1': 1,
     'semifinal2': 2
   };
 
   private readonly route = inject(ActivatedRoute);
-
-  protected contest = signal<ContestData | null>(null);
+  protected readonly contest = signal<ContestData | null>(null);
 
   constructor() {
     super();
@@ -33,7 +32,7 @@ export class ContestDetailsComponent extends BaseContestComponent {
   }
 
   private async loadContest() {
-    const year = +this.route.snapshot.paramMap.get('year');
+    const year = Number(this.route.snapshot.paramMap.get('year'));
     this.contest.set(await this.getContestData(year));
   }
 
@@ -58,7 +57,7 @@ export class ContestDetailsComponent extends BaseContestComponent {
       contestants: contest.contestants,
       rounds: isCancelled
         ? [contest.rounds[0]]
-        : contest.rounds.sort((a, b) => this.ROUNDS_PRIORITY[a.name] - this.ROUNDS_PRIORITY[b.name])
+        : contest.rounds.sort((a, b) => ContestDetailsComponent.ROUNDS_PRIORITY[a.name] - ContestDetailsComponent.ROUNDS_PRIORITY[b.name])
     };
   }
 
@@ -117,7 +116,7 @@ interface ContestData {
   slogan: string;
   logoUrl: string;
   isCancelled: boolean;
-  cancelledMessage: string;
+  cancelledMessage: string | null;
   participants: number;
   broadcasters: string;
   presenters: string;

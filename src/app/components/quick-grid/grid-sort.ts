@@ -1,6 +1,6 @@
 export class GridSort<TGridItem> {
 
-  expressions: [(item: TGridItem) => any, boolean][] = [];
+  private readonly expressions: [(item: TGridItem) => any, boolean][] = [];
 
   private constructor(expression: (item: TGridItem) => any, ascending: boolean) {
     this.addExpression(expression, ascending);

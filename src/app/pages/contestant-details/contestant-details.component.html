@@ -106,23 +106,25 @@
       <div class="lyrics-header">
         <span>Lyrics</span>
         <select [value]="lyricsSelectedIndex()" (change)="onLyricsChanged($event)">
-          @for (lyrics of contestant.lyrics; track $index) {
+          @for (lyrics of lyrics; track $index) {
             <option [value]="$index">{{lyrics.languages}}</option>
           }
         </select>
       </div>
 
-      <div class="lyrics-title">{{lyricsRender.title}}</div>
+      @if (lyricsRender(); as render) {
+        <div class="lyrics-title">{{render.title}}</div>
 
-      <div class="lyrics-content">
-        @for (column of lyricsRender.contentColumns; track $index) {
-          <div>
-            @for (paragraph of column; track $index) {
-              <p [innerHTML]="paragraph"></p>
-            }
-          </div>
-        }
-      </div>
+        <div class="lyrics-content">
+          @for (column of render.contentColumns; track $index) {
+            <div>
+              @for (paragraph of column; track $index) {
+                <p [innerHTML]="paragraph"></p>
+              }
+            </div>
+          }
+        </div>
+      }
     </section>
   }
 }
