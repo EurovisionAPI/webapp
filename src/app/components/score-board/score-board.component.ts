@@ -25,7 +25,10 @@ export class ScoreBoardComponent implements OnInit {
   ngOnInit(): void {
     const firstPerformance = this.performances()[0];
     this.types.set(firstPerformance.scores.map(score => score.name));
-    this.countries.set(Object.keys(firstPerformance.scores[0].votes));
+
+    if (firstPerformance.scores[0].votes) {
+      this.countries.set(Object.keys(firstPerformance.scores[0].votes));
+    }
 
     this.getPerformancesData();
   }

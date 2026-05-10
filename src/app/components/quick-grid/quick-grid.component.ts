@@ -38,6 +38,6 @@ export class QuickGridComponent<T> {
   }
 
   protected getAlignClass(column: TemplateColumnComponent): string {
-    return `col-justify-${column.align}`;
+    return `col-justify-${column.align()}`;
   }
 }

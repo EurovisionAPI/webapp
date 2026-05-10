@@ -61,6 +61,13 @@ main {
   max-width: 1200px;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 /* ======================= Footer ======================= */
 
 footer {

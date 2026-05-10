@@ -1,4 +1,4 @@
-@if (types.length > 1) {
+@if (types().length > 1) {
   <div class="toggle">
     <app-switch [options]="types()" [value]="typeIndexSelected()" (change)="changeType($event)"></app-switch>
   </div>
@@ -7,18 +7,20 @@
 <div class="table-container">
   <table>
     <thead>
-      <tr>
-        <th colspan="3" style="background: transparent;"></th>
-        @for (country of countries(); track country) {
-          <th>
-            @if (country === 'WLD') {
-              <img class="flag" src="images/world.webp">
-            } @else {
-              <app-flag [countryCode]="country"></app-flag>
-            }
-          </th>
-        }
-      </tr>
+      @if (countries().length > 0) {
+        <tr>
+          <th colspan="3" style="background: transparent;"></th>
+          @for (country of countries(); track country) {
+            <th>
+              @if (country === 'WLD') {
+                <img class="flag" src="images/world.webp">
+              } @else {
+                <app-flag [countryCode]="country"></app-flag>
+              }
+            </th>
+          }
+        </tr>
+      }
     </thead>
 
     <tbody>

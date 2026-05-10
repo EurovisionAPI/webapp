@@ -9,7 +9,13 @@
 </header>
 
 <main>
-  <router-outlet></router-outlet>
+  @if (isLoading()) {
+    <div class="loading-container">
+      <app-loading></app-loading>
+    </div>
+  } @else {
+    <router-outlet></router-outlet>
+  }
 </main>
 
 <footer>

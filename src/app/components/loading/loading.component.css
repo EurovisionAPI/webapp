@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.heart {
+  width: 150px;
+  height: 150px;
+  background-color: var(--brand-color);
+
+  mask: url('/images/heart_logo.svg') no-repeat center;
+  mask-size: contain;
+  animation-name: heart;
+  animation-duration: 1.25s;
+  animation-iteration-count: infinite;
+}
+
+.text {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.loading-dots {
+  display: inline-block;
+  width: 3ch; /* ancho exacto de 3 caracteres */
+}
+
+.loading-dots::after {
+  content: '';
+  animation: dots 5s steps(4, end) infinite;
+}
+
+@keyframes heart {
+  20% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes dots {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+}
