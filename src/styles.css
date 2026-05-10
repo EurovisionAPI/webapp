@@ -27,6 +27,13 @@ input, button, select {
   line-height: inherit;
 }
 
+/* ====================== Images ======================= */
+
+.heart-svg {
+  mask: url('./assets/images/heart_logo.svg') no-repeat center;
+  mask-size: contain;
+}
+
 /* ======================= Fonts ======================= */
 
 @font-face {

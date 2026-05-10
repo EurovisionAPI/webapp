@@ -5,13 +5,11 @@
   gap: 2rem;
 }
 
-.heart {
+.heart-svg {
   width: 150px;
   height: 150px;
   background-color: var(--brand-color);
 
-  mask: url('/images/heart_logo.svg') no-repeat center;
-  mask-size: contain;
   animation-name: heart;
   animation-duration: 1.25s;
   animation-iteration-count: infinite;
